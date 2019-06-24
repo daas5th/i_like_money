@@ -2,7 +2,7 @@ FROM golang:1.12.6-alpine3.10
 
 WORKDIR /i_like_money
 
-COPY web.go web.go
+COPY ilikemoney/web.go web.go
 
 RUN go build
 
