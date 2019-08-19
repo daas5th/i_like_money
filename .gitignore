@@ -12,3 +12,5 @@
 *.out
 
 *swp
+mail/mail.json
+
