@@ -14,11 +14,9 @@ import (
 )
 
 func main() {
-	ReadJson()
-
 	e := echo.New()
 
-	e.GET("/mail", func(c echo.Context) error {
+	e.GET("/", func(c echo.Context) error {
 		send("hello there")
 		return c.JSON(http.StatusOK, "send_OK")
 	})
@@ -27,9 +25,8 @@ func main() {
 }
 
 func send(body string) {
-	from := ""
-	pass := ""
-	to := ""
+	from, pass := ReadJson()
+	to := "" //add reciever's mail address
 
 	msg := "From: " + from + "\n" +
 		"To: " + to + "\n" +
@@ -53,15 +50,12 @@ type UserInfo struct {
 	Pass string `json:"pass"`
 }
 
-func ReadJson() {
-	// Open our jsonFile
+func ReadJson() (string, string) {
 	jsonFile, err := os.Open("mail.json")
-	// if we os.Open returns an error then handle it
 	if err != nil {
 		fmt.Println(err)
 	}
 	fmt.Println("Successfully Opened users.json")
-	// defer the closing of our jsonFile so that we can parse it later on
 	defer jsonFile.Close()
 
 	byteValue, _ := ioutil.ReadAll(jsonFile)
@@ -70,6 +64,5 @@ func ReadJson() {
 
 	json.Unmarshal(byteValue, &userinfo)
 	fmt.Println(reflect.TypeOf(userinfo.From))
-	//	return userinfo.From, userinfo.Pass
-
+	return userinfo.From, userinfo.Pass
 }
